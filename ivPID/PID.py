@@ -1,11 +1,34 @@
-# Modules
+#!/usr/bin/python
+#
+# This file is part of IvPID.
+# Copyright (C) 2015 Ivmech Mechatronics Ltd. <bilgi@ivmech.com>
+#
+# IvPID is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# IvPID is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# title           :PID.py
+# description     :python pid controller
+# author          :Caner Durmusoglu
+# date            :20151218
+# version         :0.1
+# notes           :
+# python_version  :2.7
+# ==============================================================================
+
+"""Ivmech PID Controller is simple implementation of a Proportional-Integral-Derivative (PID) Controller in the Python Programming Language.
+More information about PID Controller: http://en.wikipedia.org/wiki/PID_controller
+"""
 import time
-import pyserial
-import numpy
-
-# PID Control
-#this code is from ivPID (may leave in its own file and call from here instead?)
 
 class PID:
     """PID Controller
@@ -104,61 +127,3 @@ class PID:
         Based on a pre-determined sampe time, the PID decides if it should compute or return immediately.
         """
         self.sample_time = sample_time
-
-#User Inputs
- PID=PID.PID(P,I,D)
- PID.SetPoint=input("Temperature Setpoint: ")
- PID.Kp=input("Proportional Constant: ")
- PID.Ki=input("Integral Constant: ")
- PID.Kd=input("Derivative Constant: ")
-    #ports
- coolport=input("cooling box port: ")
- coolrate=input("cool box rate: ")
-
- ardport=input("arduino port: ")
- ardrate=input("arduino rate: ")
-
-#serial port config
- """gray cable serial port: polarity changer"""
- """arduino serial port"""
- arduino=serial.Serial(ardport, ardrate)
- polaritybox=serial.Serial(coolport, coolrate)
-
-
-#for pid control
-while '''condition for reading data''':
-	arduino.write('AVG\r')
-	output=arduino.readline()
-    tempavg=float(str(output[2,-5]) #why do I have to turn this into a string first. curse you and your b character
-
-    feedback_value=tempavg #the pid will use this value to calculate error
-
-#changing the polarity (heat/cool) appropriately
-while error <= -2.0:
-    polaritybox.write('co') #changes to cool
-while error > 2.0:
-    polaritybox.write('ch') #changes to heat
-else:
-    polaritybox.write('cc') #stops cooling
-
-#duty cycle is a number between 0 and 0.5
-#temp will go between 80F and like... -30C? remember to ask about this
-#detector operates down to ~-20 max
-#turn the PID into a number between 0 and 0.5 we can use
-#110.0 is arbitrarily chosen for the estimated range of the coldbox
-dutycyc=PID/110.0
-if dutycyc > 0.5:
- 	print("duty cycle value above 0.5! not allowed!") #until we figure out how to translate the PID properly
-else:
-    #note to self: add an arduino function that writes the duty cycle to its appropriate pin. Call it DUTY
-    arduino.write('DUTY'+str(dutycyc)+'\r') #command name + value + escape character
-
-
-
-
-
-
-
- 
-
-
