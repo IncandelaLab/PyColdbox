@@ -124,7 +124,6 @@ class PID:
  arduino=serial.Serial(ardport, ardrate)
  polaritybox=serial.Serial(coolport, coolrate)
 
-
 #for pid control
 while '''condition for reading data''':
 	arduino.write('AVG\r')
