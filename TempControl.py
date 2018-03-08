@@ -118,6 +118,9 @@ class PID:
  ardport=input("arduino port: ")
  ardrate=input("arduino rate: ")
 
+#functions to make this reasonable
+convert= lambda x: float(str(x)) 
+
 #serial port config
  """gray cable serial port: polarity changer"""
  """arduino serial port"""
@@ -128,7 +131,7 @@ class PID:
 while '''condition for reading data''':
 	arduino.write('AVG\r')
 	output=arduino.readline()
-    tempavg=float(str(output[2,-5]) #why do I have to turn this into a string first. curse you and your b character
+    tempavg=convert(output[2,-5]) #why do I have to turn this into a string first. curse you and your b character
 
     feedback_value=tempavg #the pid will use this value to calculate error
 
