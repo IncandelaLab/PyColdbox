@@ -106,17 +106,19 @@ class PID:
         self.sample_time = sample_time
 
 #User Inputs
- PID=PID.PID(P,I,D)
  PID.SetPoint=input("Temperature Setpoint: ")
  PID.Kp=input("Proportional Constant: ")
  PID.Ki=input("Integral Constant: ")
  PID.Kd=input("Derivative Constant: ")
+ PID=PID.PID(P,I,D)
     #ports
  coolport=input("cooling box port: ")
  coolrate=input("cool box rate: ")
 
  ardport=input("arduino port: ")
  ardrate=input("arduino rate: ")
+
+ dutycyc=input("target duty cycle: ")
 
 #functions to make this reasonable
 convert= lambda x: float(str(x)) 
@@ -148,12 +150,13 @@ else:
 #detector operates down to ~-20 max
 #turn the PID into a number between 0 and 0.5 we can use
 #110.0 is arbitrarily chosen for the estimated range of the coldbox
-dutycyc=PID/110.0
-if dutycyc > 0.5:
- 	print("duty cycle value above 0.5! not allowed!") #until we figure out how to translate the PID properly
+dutycycle=dutycyc*PID
+if dutycycle > 1.0:
+ 	print("duty cycle value above 1.0! not allowed!") #until we figure out how to translate the PID properly
 else:
     #note to self: add an arduino function that writes the duty cycle to its appropriate pin. Call it DUTY
     arduino.write('DUTY'+str(dutycyc)+'\r') #command name + value + escape character
+    PID.update(PID,feedback_value)
 
 
 
